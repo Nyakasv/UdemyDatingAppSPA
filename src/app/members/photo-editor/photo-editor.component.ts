@@ -7,6 +7,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import * as _ from 'underscore';
 
+// this component utilize NG2 File Uploader and UnderscorJS
 @Component({
   selector: 'app-photo-editor',
   templateUrl: './photo-editor.component.html',
@@ -30,6 +31,8 @@ export class PhotoEditorComponent implements OnInit {
     this.hasBaseDropZoneOver = e;
   }
 
+  // even so the isHTML5 is set to true the component html give an error:
+  // Identifier 'isHTML5' is not defined. 'FileUploader' does not contain such a member
   initializeUploader() {
     this.uploader  =  new FileUploader({
       url: this.baseUrl + 'users/' + this.authSevice.decodedToken.nameid + '/photos',
@@ -52,6 +55,11 @@ export class PhotoEditorComponent implements OnInit {
           isMain: res.isMain
         };
         this.photos.push(photo);
+        if (photo.isMain) {
+          this.authSevice.changeMemberPhoto(photo.url);
+          this.authSevice.currentUser.photoUrl = photo.url;
+          localStorage.setItem('user', JSON.stringify(this.authSevice.currentUser));
+        }
       }
     };
   }

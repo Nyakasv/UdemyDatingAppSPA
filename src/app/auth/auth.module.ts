@@ -19,4 +19,4 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     }
   ]
 })
-export class AuthModule{}
+export class AuthModule {}
